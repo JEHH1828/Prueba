@@ -1,0 +1,61 @@
+#include <LiquidCrystal_I2C.h>
+#include <Wire.h>
+//#include <Adafruit_LiquidCrystal.h>
+
+LiquidCrystal_I2C lcd(0x27,16,2);
+
+const int puls = 2;
+const int led=13;
+int cont=0;
+int estado_pul=0;
+double time;
+
+
+void setup()
+{
+  lcd.init();
+  lcd.backlight();
+  lcd.clear();
+  pinMode(puls,INPUT_PULLUP);
+  pinMode(led,OUTPUT);
+    
+  //lcd.begin(16, 2);
+  lcd.setCursor(0, 0);
+  lcd.print("CONTADOR DE");
+  
+  lcd.setCursor(0, 1);
+  lcd.print("OSCILACIONES");
+  
+  delay(1000);  
+  lcd.setCursor(0, 1);
+  lcd.print("             ");
+  lcd.setCursor(0, 0);
+  lcd.print("             ");
+}
+
+void loop()
+{
+  estado_pul= digitalRead(puls);
+  
+  if(estado_pul==0){
+  	cont++;
+    
+    lcd.setCursor(2, 0);
+    lcd.print(" OSCILACIONES ");
+    lcd.setCursor(0, 0);
+    lcd.print(cont-1);
+    
+    
+    lcd.setCursor(0, 1);
+    lcd.print((millis()/10)-time);
+    time=(millis()/10);
+    lcd.setCursor(5, 1);
+    lcd.print("mseg");
+    
+    
+    
+    digitalWrite(led, HIGH);
+    delay(1000);
+    digitalWrite(led, LOW);
+  }
+}
